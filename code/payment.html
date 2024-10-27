@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DomestiCo - Payment</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- <style>
+        body{
+            background-image: url(./img/DALL·E\ 2024-10-20\ 23.05.45\ -\ A\ sleek\,\ modern\ background\ image\ featuring\ a\ minimalist\ gradient\,\ transitioning\ from\ a\ soft\ light\ blue\ at\ the\ top\ to\ a\ calming\ white\ at\ the\ bottom.\ In.webp);
+            background-size:cover;
+        }
+    </style> -->
+</head>
+<body>
+    <!-- <header>
+        <div class="container">
+            <h1>DomestiCo - Complete Your Payment</h1>
+            <nav>
+                <ul>
+                    <li><a href="register.html">Sign-In</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="search.html">Search Maids</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header> -->
+
+    <!-- Payment Status Section -->
+    <div class="container">
+        <div id="statusMessage" class="status"></div>
+    </div>
+
+    <main>
+        <div class="container">
+            <h2>Proceed to Payment</h2>
+            <div id="bookingSummary">
+                <!-- Booking Summary will be dynamically updated -->
+            </div>
+
+            <!-- UPI Payment Form -->
+            <form id="paymentForm">
+                <h3>UPI Payment</h3>
+
+                <!-- UPI ID -->
+                <label for="upiId">UPI ID:</label>
+                <input type="password" id="upiId" placeholder="yourname@bank" required>
+
+                <!-- Phone Number -->
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                <button type="submit" class="btn">Pay Now</button>
+                <a href="feedback.html" class="btn">Click Next</a>
+            </form>
+        </div>
+    </main>
+
+    <!-- <footer>
+        <div class="container">
+            <p>&copy; 2024 DomestiCo. All rights reserved.</p>
+        </div>
+    </footer> -->
+
+    <script>
+        // Retrieve booking data from localStorage and display it
+        function displayBookingDetails() {
+            var maidName = localStorage.getItem("maidName");
+            var totalAmount = localStorage.getItem("totalAmount");
+            var duration = localStorage.getItem("duration");
+
+            // Display the booking details on the payment page
+            var bookingSummary = document.getElementById('bookingSummary');
+            bookingSummary.innerHTML = `
+                <h3>Booking Summary</h3>
+                <p><strong>Please Ensure The Maid Details</strong> 
+            `;
+        }
+
+        // Call the function to display booking details when the page loads
+        window.onload = displayBookingDetails;
+
+        function processPayment() {
+            var statusMessage = document.getElementById('statusMessage');
+            
+            // Capture payment information
+            var userUpiId = document.getElementById('upiId').value; // Capture UPI ID
+            var userPhone = document.getElementById('phone').value; // Capture phone number
+    
+            // Display confirmation message on the page
+            statusMessage.innerHTML = "Payment in progress... You will receive a confirmation once the payment is processed.";
+            statusMessage.style.color = 'blue';
+    
+            // Simulate sending payment data to the server
+            fetch('/process-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    maidName: localStorage.getItem("maidname"),
+                    
+                    upiId: userUpiId,
+                    phone: userPhone,
+                    paymentMethod: "UPI"
+                })
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Server response
+                statusMessage.innerHTML = "Payment successful! You will receive a confirmation message shortly.";
+                statusMessage.style.color = 'green';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                statusMessage.innerHTML = "Error processing payment. Please try again.";
+                statusMessage.style.color = 'red';
+            });
+        }
+
+        // Form submission handler
+        document.getElementById('paymentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting traditionally
+            processPayment(); // Call the function to process the UPI payment
+        });
+    </script>
+</body>
+</html>
