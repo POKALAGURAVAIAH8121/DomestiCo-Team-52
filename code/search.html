@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DomestiCo - Search Maids</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- <style>
+        body{
+            background-image: url(./img/DALL·E\ 2024-10-20\ 23.05.45\ -\ A\ sleek\,\ modern\ background\ image\ featuring\ a\ minimalist\ gradient\,\ transitioning\ from\ a\ soft\ light\ blue\ at\ the\ top\ to\ a\ calming\ white\ at\ the\ bottom.\ In.webp);
+            background-size:cover;
+        }
+    </style> -->
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Search for Maids</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="search.html">Search Maids</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>Find the Perfect Maid</h2>
+
+            <!-- Filter form with more options -->
+            <form id="searchForm">
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" required placeholder="Enter city">
+                </div>
+
+                <div class="form-group">
+                    <label for="payRate">Max Pay Rate (per day):</label>
+                    <input type="text" id="payRate" required placeholder="Value to be above 100">
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Experience:</label>
+                    <select id="experience">
+                        <option value="any">Any</option>
+                        <option value="1">1 year</option>
+                        <option value="2">2 years</option>
+                        <option value="3">3+ years</option>
+                        <option value="5">5+ years</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="availability">Availability:</label>
+                    <select id="availability">
+                        <option value="select">Select</option>
+                        <option value="full-time">Full-time</option>
+                        <option value="part-time">Part-time</option>
+                    </select>
+                </div>
+
+                <!-- Service specifications checkboxes -->
+                <div >
+                    
+                        <div id="service">                        
+                            <label for="services">Required Services:</label><br>
+                        </div>
+                        
+                    <div class="form-group-check">
+                    <div style="margin-right: 5px">
+                        <input type="checkbox"  id="cleaning" value="cleaning">
+                    </div>
+
+                    <div>
+                    <label for="cleaning" >Cleaning</label><br>
+                  </div>
+                  </div>
+                    <div class="form-group-check">
+                    
+                        <div style="margin-right: 5px">                    
+                            <input type="checkbox"  id="cooking" value="cooking">
+                        </div>
+                        <div>
+                         <label for="cooking">Cooking</label><br>
+                        </div>
+                    </div>
+                    <div class="form-group-check">
+                        <div style="margin-right: 5px">
+                       <input type="checkbox" id="washing" value="washing">
+                       </div>
+                       <label for="washing">Washing Clothes</label><br>
+                    </div>
+                    <div class="form-group-check">
+                        <div style="margin-right: 5px">
+                       <input type="checkbox" id="babysitting" value="babysitting">
+                       </div>
+                       <label for="babysitting">Babysitting</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Search</button>
+            </form>
+
+            <!-- Results section -->
+            <div id="resultsContainer" class="results">
+                <h3>Results</h3>
+                <div id="maidResults">
+                    <!-- Results will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 DomestiCo. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Dummy maid data for simulation
+        const maids = [
+            { name: 'David', location: 'Tirupati', payRate: 100, gender : 'Male', experience: 1, availability: 'full-time', services: ['cleaning', 'cooking'] },
+            { name: 'Krishna', location: 'Chennai', payRate: 120,  gender : 'Male', experience: 2, availability: 'part-time', services: ['washing', 'babysitting'] },
+            { name: 'Varun', location: 'Tiruvallur', payRate: 140, gender : 'Male', experience: 3, availability: 'full-time', services: ['cleaning', 'cooking', 'babysitting'] },
+            { name: 'Lakshya', location: 'Tiruthani', payRate: 160, gender : 'Female', experience: 4, availability: 'part-time', services: ['washing', 'cleaning'] },
+            { name: 'Sitha', location: 'Chambharapakam', payRate: 180,gender : 'Female', experience: 5, availability: 'full-time', services: ['cooking', 'washing'] },
+            { name: 'Keerthi', location: 'Poonamalle', payRate: 200,gender : 'Female', experience: 6, availability: 'part-time', services: ['cleaning', 'cooking', 'babysitting'] }
+        ];
+
+        // Search form handler
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const location = document.getElementById('location').value.toLowerCase();
+            const maxPayRate = parseInt(document.getElementById('payRate').value);
+            const experience = document.getElementById('experience').value;
+            const availability = document.getElementById('availability').value;
+
+            // Get selected services
+            const selectedServices = [];
+            if (document.getElementById('cleaning').checked) selectedServices.push('cleaning');
+            if (document.getElementById('cooking').checked) selectedServices.push('cooking');
+            if (document.getElementById('washing').checked) selectedServices.push('washing');
+            if (document.getElementById('babysitting').checked) selectedServices.push('babysitting');
+
+            const resultsDiv = document.getElementById('maidResults');
+            resultsDiv.innerHTML = ''; // Clear previous results
+
+            // Filter maids based on user input
+            const filteredMaids = maids.filter(maid => {
+                return maid.location.toLowerCase().includes(location) &&
+                       maid.payRate <= maxPayRate &&
+                       (experience === 'any' || maid.experience >= parseInt(experience)) &&
+                       maid.availability === availability &&
+                       selectedServices.every(service => maid.services.includes(service));
+            });
+
+            // Show results
+            if (filteredMaids.length > 0) {
+                filteredMaids.forEach(maid => {
+                    const maidCard = `
+                        <div class="maid-card">
+                            <h4>${maid.name}</h4>
+                            <p><strong>Location:</strong> ${maid.location}</p>
+                            <p><strong>Pay Rate:</strong> Rs.${maid.payRate}/day</p>
+                            <p><strong>Experience:</strong> ${maid.experience} years</p>
+                            <p><strong>Gender:</strong> ${maid.gender}</p>
+                            <p><strong>Availability:</strong> ${maid.availability}</p>
+                            <p><strong>Services:</strong> ${maid.services.join(', ')}</p>
+                            <a href="booking.html" class="btn">Book Now</a>
+                        </div>
+                    `;
+                    resultsDiv.innerHTML += maidCard;
+                });
+            } else {
+                resultsDiv.innerHTML = '<p>No maids found matching your criteria.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
