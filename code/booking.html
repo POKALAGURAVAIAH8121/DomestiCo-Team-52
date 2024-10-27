@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DomestiCo - Book Maid</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- <style>
+        body{
+            background-image: url(./img/DALL·E\ 2024-10-20\ 23.05.45\ -\ A\ sleek\,\ modern\ background\ image\ featuring\ a\ minimalist\ gradient\,\ transitioning\ from\ a\ soft\ light\ blue\ at\ the\ top\ to\ a\ calming\ white\ at\ the\ bottom.\ In.webp);
+            background-size:cover;
+        }
+    </style> -->
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>DomestiCo - Book a Maid</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="search.html">Search Maids</a></li>
+                    <li><a href="payment.html">Payment</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Booking Confirmation Section -->
+    <div class="container">
+        
+          <h2>Confirm Booking</h2>
+          <p>Please confirm the following booking details:</p>
+          <button class="btn" onclick="confirmBooking()">Confirm and Proceed to Payment</button>
+        
+    </div>
+
+    <!-- <footer>
+        <p>&copy; 2024 DomestiCo. All rights reserved.</p>
+    </footer> -->
+
+    <script>
+        function confirmBooking() {
+            // Store booking data in localStorage
+            localStorage.setItem("maidName", " ");
+            localStorage.setItem("totalAmount", " ");
+            localStorage.setItem("duration", " ");
+
+            // Redirect to the payment page
+            window.location.href = "payment.html";
+        }
+    </script>
+</body>
+</html>
